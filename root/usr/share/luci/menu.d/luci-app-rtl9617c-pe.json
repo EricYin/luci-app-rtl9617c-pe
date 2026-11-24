@@ -1,0 +1,13 @@
+{
+	"admin/network/rtl9617c_pe": {
+		"title": "PE 协处理器看板",
+		"order": 57,
+		"action": {
+			"type": "view",
+			"path": "rtl9617c-pe/dashboard"
+		},
+		"depends": {
+			"acl": [ "luci-app-rtl9617c-pe" ]
+		}
+	}
+}
