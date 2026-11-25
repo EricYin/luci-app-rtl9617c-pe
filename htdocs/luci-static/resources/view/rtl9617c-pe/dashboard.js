@@ -22,6 +22,12 @@ var callSetFeature = rpc.declare({
 	params: [ 'id', 'enabled', 'pe' ]
 });
 
+var callSetParams = rpc.declare({
+	object: 'luci.rtl9617c-pe',
+	method: 'set_params',
+	params: [ 'fq_rate_kbps', 'fq_target_us', 'fq_ecn', 'mcast_rate_kbps' ]
+});
+
 var callDisableAll = rpc.declare({
 	object: 'luci.rtl9617c-pe',
 	method: 'disable_all'
@@ -290,7 +296,9 @@ return view.extend({
 					E('div', {}, [ 'PrId: ', E('span', { 'class': 'rp-mono' }, isRun ? (c.cp0_prid || '--') : '--') ]),
 					E('div', {}, '运行时长: ' + fmtUptime(c.uptime_ms)),
 					E('div', {}, '看门狗心跳: ' + String(c.heartbeat || 0)),
-					E('div', {}, [ '特性掩码: ', E('span', { 'class': 'rp-mono' }, '0x' + (Number(c.feature_mask) || 0).toString(16)) ])
+					E('div', {}, [ '特性掩码: ', E('span', { 'class': 'rp-mono' }, '0x' + (Number(c.feature_mask) || 0).toString(16)) ]),
+					E('div', {}, 'DMA VP: ' + (c.dma_vp_ready ? ('VP' + c.dma_vp_id + ' 就绪') : '未绑定')),
+					E('div', {}, '入队/旁路: ' + fmtCount(c.dp_enq) + ' / ' + fmtCount(c.dp_bypass))
 				])
 			]);
 		});
@@ -311,18 +319,34 @@ return view.extend({
 				E('option', { 'value': '1', 'selected': f.pe === 1 ? 'selected' : null }, 'PE1')
 			]);
 
+			var stCell;
+			if (f.active && f.hw_bound)
+				stCell = badge('硬件直通', 'good');
+			else if (f.active && !f.hw_bound)
+				stCell = badge('仅框架占位', 'warn');
+			else if (f.enabled)
+				stCell = badge('待机', 'warn');
+			else
+				stCell = badge('未启用', '');
+
+			var statSub = (f.active && f.hw_bound)
+				? E('div', { 'class': 'rp-note', 'style': 'margin-top:2px' },
+					'队列 ' + (f.qdepth || 0) + ' · 丢包 ' + fmtCount(f.drops || 0) + ' · ECN ' + fmtCount(f.ecn_marks || 0))
+				: null;
+
 			return E('tr', {}, [
-				E('td', { 'class': 'rp-wrap' }, [
+				E('td', { 'class': 'rq-wrap rp-wrap' }, [
 					E('strong', {}, f.name),
 					E('div', { 'class': 'rp-note', 'style': 'margin-top:2px' }, f.desc)
 				]),
 				E('td', {}, E('a', { 'href': L.url(f.module_url) }, f.module_title + ' ↗')),
 				E('td', {}, sel),
-				E('td', {}, f.active
-					? badge('运行中', 'good')
-					: (f.enabled ? badge('待机', 'warn') : badge('未启用', ''))),
+				E('td', {}, stCell),
 				E('td', { 'class': 'rp-mono' }, fmtPct(f.util_permille)),
-				E('td', { 'class': 'rp-mono' }, fmtCount(f.packets) + ' / ' + fmtBytes(f.bytes)),
+				E('td', { 'class': 'rp-mono' }, [
+					E('div', {}, fmtCount(f.packets) + ' / ' + fmtBytes(f.bytes)),
+					statSub
+				].filter(Boolean)),
 				E('td', {}, f.enabled
 					? E('button', {
 						'class': 'cbi-button cbi-button-remove',
@@ -361,7 +385,7 @@ return view.extend({
 						E('th', {}, '挂载核'),
 						E('th', {}, '状态'),
 						E('th', {}, '功能占用率'),
-						E('th', {}, '报文 / 流量'),
+						E('th', {}, '报文 / 流量 / AQM'),
 						E('th', {}, '操作')
 					])),
 					E('tbody', {}, featRows)
@@ -389,12 +413,12 @@ return view.extend({
 			E('pre', { 'class': 'rp-log rp-mono' }, logText && logText.length ? logText : '(当前核心暂无日志输出)')
 		]);
 
-		dom.content(self.rootNode, [
+		dom.content(self.dynNode || self.rootNode, [
 			E('div', { 'class': 'rp-header' }, [
 				E('div', {}, [
 					E('div', { 'class': 'rp-eyebrow' }, 'RTL9617C TAURUS COPROCESSOR'),
 					E('h2', {}, 'PE 协处理器看板'),
-					E('div', { 'class': 'rp-note' }, '监控 PE0 / PE1 实时主频、硬件级占用率与各卸载功能归属，支持热切换与一键释放省电。')
+					E('div', { 'class': 'rp-note' }, '监控 PE0 / PE1 实时主频、DMA VP 硬件直通队列、AQM 丢包/ECN 统计，支持无重启热迁移与节能关钟。')
 				])
 			]),
 			summaryGrid,
@@ -405,16 +429,69 @@ return view.extend({
 		]);
 	},
 
+	buildParamCard: function(st) {
+		var self = this;
+		var p = (st && st.params) || {};
+		var inpFqRate = E('input', {
+			'type': 'number', 'min': '0', 'max': '10000000', 'step': '1000',
+			'class': 'cbi-input-text', 'style': 'width:120px',
+			'value': String(p.fq_rate_kbps != null ? p.fq_rate_kbps : 0)
+		});
+		var inpFqTarget = E('input', {
+			'type': 'number', 'min': '100', 'max': '100000', 'step': '500',
+			'class': 'cbi-input-text', 'style': 'width:95px',
+			'value': String(p.fq_target_us != null ? p.fq_target_us : 5000)
+		});
+		var inpMcastRate = E('input', {
+			'type': 'number', 'min': '0', 'max': '10000000', 'step': '1000',
+			'class': 'cbi-input-text', 'style': 'width:120px',
+			'value': String(p.mcast_rate_kbps != null ? p.mcast_rate_kbps : 0)
+		});
+		var inpEcn = E('input', {
+			'type': 'checkbox',
+			'checked': (p.fq_ecn === undefined || p.fq_ecn) ? 'checked' : null
+		});
+
+		return E('div', { 'class': 'rp-card' }, [
+			E('div', { 'class': 'rp-card-head' }, [
+				E('h3', 'PE FQ-CoDel 与组播数据面参数（1ns PTP 硬件定时）'),
+				E('button', {
+					'class': 'cbi-button cbi-button-apply',
+					'click': function() {
+						var rq = parseInt(inpFqRate.value, 10) || 0;
+						var tq = parseInt(inpFqTarget.value, 10) || 5000;
+						var mq = parseInt(inpMcastRate.value, 10) || 0;
+						var ecn = inpEcn.checked ? 1 : 0;
+						self.runAction(
+							callSetParams(rq, tq, ecn, mq),
+							'已应用 PE 数据面队列与整形参数（FQ 整形=' + rq + ' kbps, ECN=' + ecn + '）。'
+						);
+					}
+				}, '保存并热生效')
+			]),
+			E('div', { 'style': 'display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:13px' }, [
+				E('label', {}, [ 'FQ-CoDel 整形带宽 (kbps, 0=不限): ', inpFqRate ]),
+				E('label', {}, [ 'CoDel 目标延迟 (us): ', inpFqTarget ]),
+				E('label', {}, [ inpEcn, ' 启用 ECN CE 标记' ]),
+				E('label', {}, [ '组播平滑限速 (kbps, 0=不限): ', inpMcastRate ])
+			]),
+			E('div', { 'class': 'rp-note', 'style': 'margin-top:8px' },
+				'提示：若光猫上行实际带宽约 250 Mbps 且经代理上传触发上游缓存延迟飙升，可将 FQ-CoDel 整形带宽设为略低于实测上限（如 235000 kbps）以将瓶颈队列锁定在 PE CoDel 中；设为 0 则仅做 64 流公平调度与无损直发。')
+		]);
+	},
+
 	render: function(data) {
 		var self = this;
 		var st = data && data[0];
 		var logText = data && data[1] ? data[1].log : '';
 
-		self.rootNode = E('div', { 'class': 'rtlpe' });
+		self.dynNode = E('div');
+		self.paramNode = st ? self.buildParamCard(st) : E('div');
+		self.rootNode = E('div', { 'class': 'rtlpe' }, [ self.dynNode, self.paramNode ]);
 		if (st) {
 			self.renderDashboard(st, logText);
 		} else {
-			dom.content(self.rootNode, E('div', { 'class': 'rp-card' }, [
+			dom.content(self.dynNode, E('div', { 'class': 'rp-card' }, [
 				E('h3', {}, '无法连接 luci.rtl9617c-pe 服务'),
 				E('p', { 'class': 'rp-note' }, '请确认已安装 rtl9617c-pe-offload 并重启 rpcd 服务。')
 			]));
