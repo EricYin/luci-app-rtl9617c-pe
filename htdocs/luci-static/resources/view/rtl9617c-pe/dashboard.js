@@ -271,8 +271,7 @@ return view.extend({
 					E('div', { 'class': 'rp-actions' }, [
 						stBadge,
 						E('button', {
-							'class': 'cbi-button cbi-button-action',
-							'style': 'padding:2px 8px;font-size:12px',
+							'class': 'cbi-button cbi-button-action rp-btn-sm',
 							'disabled': isRun ? null : 'disabled',
 							'title': '向 PE' + c.core + ' 发送 8000 轮 FNV-1a 校验以验证实机算力与占用率统计',
 							'click': function() {
@@ -349,8 +348,7 @@ return view.extend({
 				].filter(Boolean)),
 				E('td', {}, f.enabled
 					? E('button', {
-						'class': 'cbi-button cbi-button-remove',
-						'style': 'padding:3px 10px;font-size:12px',
+						'class': 'cbi-button cbi-button-remove rp-btn-sm',
 						'click': function() {
 							self.runAction(
 								callSetFeature(f.id, false, f.pe),
@@ -359,8 +357,7 @@ return view.extend({
 						}
 					}, '一键关闭')
 					: E('button', {
-						'class': 'cbi-button cbi-button-positive',
-						'style': 'padding:3px 10px;font-size:12px',
+						'class': 'cbi-button cbi-button-positive rp-btn-sm',
 						'disabled': st.driver_loaded ? null : 'disabled',
 						'click': function() {
 							self.runAction(
@@ -399,13 +396,13 @@ return view.extend({
 				E('h3', 'PE 裸机运行日志（实时环形缓冲）'),
 				E('div', { 'class': 'rp-log-tabs' }, [
 					E('button', {
-						'class': 'rp-mode-btn' + (self.activeLogCore === 0 ? ' is-active' : ''),
-						'style': 'padding:4px 10px;font-size:12px',
+						'type': 'button',
+						'class': 'rp-tab-btn' + (self.activeLogCore === 0 ? ' is-active' : ''),
 						'click': function() { self.activeLogCore = 0; self.refreshNow(); }
 					}, 'PE0 日志'),
 					E('button', {
-						'class': 'rp-mode-btn' + (self.activeLogCore === 1 ? ' is-active' : ''),
-						'style': 'padding:4px 10px;font-size:12px',
+						'type': 'button',
+						'class': 'rp-tab-btn' + (self.activeLogCore === 1 ? ' is-active' : ''),
 						'click': function() { self.activeLogCore = 1; self.refreshNow(); }
 					}, 'PE1 日志')
 				])
@@ -434,17 +431,17 @@ return view.extend({
 		var p = (st && st.params) || {};
 		var inpFqRate = E('input', {
 			'type': 'number', 'min': '0', 'max': '10000000', 'step': '1000',
-			'class': 'cbi-input-text', 'style': 'width:120px',
+			'class': 'cbi-input-text rp-param-input',
 			'value': String(p.fq_rate_kbps != null ? p.fq_rate_kbps : 0)
 		});
 		var inpFqTarget = E('input', {
 			'type': 'number', 'min': '100', 'max': '100000', 'step': '500',
-			'class': 'cbi-input-text', 'style': 'width:95px',
+			'class': 'cbi-input-text rp-param-input',
 			'value': String(p.fq_target_us != null ? p.fq_target_us : 5000)
 		});
 		var inpMcastRate = E('input', {
 			'type': 'number', 'min': '0', 'max': '10000000', 'step': '1000',
-			'class': 'cbi-input-text', 'style': 'width:120px',
+			'class': 'cbi-input-text rp-param-input',
 			'value': String(p.mcast_rate_kbps != null ? p.mcast_rate_kbps : 0)
 		});
 		var inpEcn = E('input', {
@@ -456,6 +453,7 @@ return view.extend({
 			E('div', { 'class': 'rp-card-head' }, [
 				E('h3', 'PE FQ-CoDel 与组播数据面参数（1ns PTP 硬件定时）'),
 				E('button', {
+					'type': 'button',
 					'class': 'cbi-button cbi-button-apply',
 					'click': function() {
 						var rq = parseInt(inpFqRate.value, 10) || 0;
@@ -469,11 +467,11 @@ return view.extend({
 					}
 				}, '保存并热生效')
 			]),
-			E('div', { 'style': 'display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:13px' }, [
-				E('label', {}, [ 'FQ-CoDel 整形带宽 (kbps, 0=不限): ', inpFqRate ]),
-				E('label', {}, [ 'CoDel 目标延迟 (us): ', inpFqTarget ]),
-				E('label', {}, [ inpEcn, ' 启用 ECN CE 标记' ]),
-				E('label', {}, [ '组播平滑限速 (kbps, 0=不限): ', inpMcastRate ])
+			E('div', { 'class': 'rp-param-grid' }, [
+				E('label', { 'class': 'rp-param-field' }, [ E('span', {}, 'FQ-CoDel 整形带宽 (kbps, 0=不限)'), inpFqRate ]),
+				E('label', { 'class': 'rp-param-field' }, [ E('span', {}, 'CoDel 目标延迟 (us)'), inpFqTarget ]),
+				E('label', { 'class': 'rp-param-field' }, [ E('span', {}, '组播平滑限速 (kbps, 0=不限)'), inpMcastRate ]),
+				E('label', { 'class': 'rp-param-check' }, [ inpEcn, E('span', {}, '启用 ECN CE 标记') ])
 			]),
 			E('div', { 'class': 'rp-note', 'style': 'margin-top:8px' },
 				'提示：若光猫上行实际带宽约 250 Mbps 且经代理上传触发上游缓存延迟飙升，可将 FQ-CoDel 整形带宽设为略低于实测上限（如 235000 kbps）以将瓶颈队列锁定在 PE CoDel 中；设为 0 则仅做 64 流公平调度与无损直发。')

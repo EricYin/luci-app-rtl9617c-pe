@@ -1,4 +1,4 @@
-/* RTL9617C PE Coprocessor Dashboard — Argon light/dark adaptive */
+/* RTL9617C PE Coprocessor Dashboard — Argon light/dark & mobile adaptive */
 .rtlpe {
 	--rp-accent: var(--primary, #5e72e4);
 	--rp-good: var(--success, #2dce89);
@@ -34,16 +34,16 @@
 	display: flex; align-items: flex-start; justify-content: space-between;
 	flex-wrap: wrap; gap: 14px; margin: 6px 0 18px;
 }
-.rtlpe .rp-header h2 { margin: 0 0 6px; padding: 0; border: 0; font-size: 24px; font-weight: 600; background: none; }
+.rtlpe .rp-header h2 { margin: 0 0 6px; padding: 0; border: 0; font-size: 24px; font-weight: 600; background: none; line-height: 1.3; }
 .rtlpe .rp-eyebrow { color: var(--rp-accent); font-size: 11px; font-weight: 600; letter-spacing: .12em; margin: 0 0 4px; text-transform: uppercase; }
-.rtlpe .rp-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.rtlpe .rp-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; flex-shrink: 0; }
 .rtlpe .rp-grid {
 	display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
-	gap: 16px; margin: 0 0 18px;
+	gap: 16px; margin: 0 0 18px; align-items: stretch;
 }
 .rtlpe .rp-grid-3 {
 	display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
-	gap: 14px; margin: 0 0 18px;
+	gap: 14px; margin: 0 0 18px; align-items: stretch;
 }
 .rtlpe .rp-card {
 	min-width: 0; padding: 18px 20px; border: 1px solid var(--rp-border);
@@ -51,14 +51,19 @@
 	box-shadow: 0 3px 12px rgba(20, 32, 60, .035);
 	margin-bottom: 18px;
 }
-.rtlpe .rp-grid .rp-card, .rtlpe .rp-grid-3 .rp-card { margin-bottom: 0; display: flex; flex-direction: column; }
+.rtlpe .rp-grid .rp-card, .rtlpe .rp-grid-3 .rp-card { margin-bottom: 0; display: flex; flex-direction: column; height: 100%; }
 .rtlpe .rp-card-head {
-	display: flex; align-items: flex-start; justify-content: space-between;
-	gap: 10px; margin-bottom: 12px;
+	display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+	gap: 8px 12px; margin-bottom: 12px;
 }
 .rtlpe .rp-card-head h3 {
 	margin: 0; padding: 0; border: 0; font-size: 15px; font-weight: 600;
-	background: none; flex: 1 1 auto; line-height: 1.4;
+	background: none; flex: 1 1 180px; min-width: 0; line-height: 1.4;
+}
+.rtlpe .rp-card-head .cbi-button {
+	display: inline-flex; align-items: center; justify-content: center;
+	height: auto; min-height: 34px; line-height: 1.35; padding: 6px 12px;
+	white-space: nowrap; flex-shrink: 0;
 }
 .rtlpe .rp-kpi { font-size: 26px; font-weight: 700; margin: 2px 0 6px; font-variant-numeric: tabular-nums; line-height: 1.2; }
 .rtlpe .rp-kpi-sub { font-size: 12px; color: var(--rp-muted); font-variant-numeric: tabular-nums; }
@@ -70,9 +75,9 @@
 .rtlpe .rp-badge {
 	display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px;
 	border-radius: 6px; background: var(--rp-inset); font-size: 12px; line-height: 1.4;
-	flex-shrink: 0; white-space: nowrap;
+	flex-shrink: 0; white-space: nowrap; max-width: 100%;
 }
-.rtlpe .rp-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--rp-muted); }
+.rtlpe .rp-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--rp-muted); flex-shrink: 0; }
 .rtlpe .rp-good::before { background: var(--rp-good); }
 .rtlpe .rp-warn::before { background: var(--rp-warn); }
 .rtlpe .rp-danger::before { background: var(--rp-danger); }
@@ -83,20 +88,34 @@
 }
 .rtlpe .rp-meta-row {
 	display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;
-	margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rp-border);
+	margin-top: auto; padding-top: 10px; border-top: 1px solid var(--rp-border);
 	font-size: 12px; color: var(--rp-muted); font-variant-numeric: tabular-nums;
 }
 .rtlpe .rp-mode-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 6px; }
-.rtlpe .rp-mode-btn {
-	padding: 8px 14px; border-radius: 8px; border: 1px solid var(--rp-border);
+.rtlpe .rp-mode-btn,
+.rtlpe .rp-tab-btn {
+	display: inline-flex; align-items: center; justify-content: center;
+	height: auto; min-height: 36px; line-height: 1.35;
+	padding: 7px 14px; border-radius: 8px; border: 1px solid var(--rp-border);
 	background: var(--rp-inset); color: var(--rp-text); cursor: pointer;
-	font-size: 13px; font-weight: 500; transition: all .15s ease;
+	font-size: 13px; font-weight: 500; white-space: nowrap; flex-shrink: 0;
+	transition: all .15s ease;
 }
-.rtlpe .rp-mode-btn.is-active {
+.rtlpe .rp-tab-btn {
+	min-height: 30px; padding: 5px 12px; border-radius: 7px; font-size: 12px;
+}
+.rtlpe .rp-mode-btn.is-active,
+.rtlpe .rp-tab-btn.is-active {
 	background: var(--rp-accent); border-color: var(--rp-accent); color: #fff;
 }
-.rtlpe .rp-mode-btn:disabled { opacity: .48; cursor: not-allowed; }
-.rtlpe .rp-table-wrap { width: 100%; overflow-x: auto; }
+.rtlpe .rp-mode-btn:disabled,
+.rtlpe .rp-tab-btn:disabled { opacity: .48; cursor: not-allowed; }
+.rtlpe .rp-btn-sm {
+	display: inline-flex; align-items: center; justify-content: center;
+	height: auto; min-height: 30px; line-height: 1.35;
+	padding: 4px 10px; font-size: 12px; white-space: nowrap; flex-shrink: 0;
+}
+.rtlpe .rp-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .rtlpe table.rp-table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
 .rtlpe table.rp-table th, .rtlpe table.rp-table td {
 	text-align: left; padding: 10px; border-bottom: 1px solid var(--rp-border);
@@ -105,14 +124,57 @@
 .rtlpe table.rp-table th { color: var(--rp-muted); font-weight: 600; font-size: 12px; }
 .rtlpe table.rp-table td.rp-wrap { white-space: normal; min-width: 180px; }
 .rtlpe .rp-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
-.rtlpe .rp-note { color: var(--rp-muted); font-size: 12px; line-height: 1.6; margin: 6px 0 0; }
-.rtlpe .rp-log-tabs { display: flex; gap: 8px; margin-bottom: 10px; }
+.rtlpe .rp-note { color: var(--rp-muted); font-size: 12px; line-height: 1.6; margin: 6px 0 0; overflow-wrap: anywhere; }
+.rtlpe .rp-log-tabs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; flex-shrink: 0; }
 .rtlpe pre.rp-log {
 	margin: 0; padding: 12px 14px; border-radius: 8px; background: var(--rp-inset);
 	border: 1px solid var(--rp-border); font-size: 12px; line-height: 1.55;
 	max-height: 220px; overflow: auto; white-space: pre-wrap; word-break: break-all;
 }
 .rtlpe .rp-sel {
-	padding: 4px 8px; border-radius: 6px; border: 1px solid var(--rp-border);
+	height: auto; min-height: 32px; line-height: 1.35;
+	padding: 4px 24px 4px 8px; border-radius: 6px; border: 1px solid var(--rp-border);
 	background: var(--rp-surface); color: var(--rp-text); font-size: 12px;
+	width: auto; min-width: 72px;
+}
+.rtlpe .rp-param-grid {
+	display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+	gap: 12px 16px; align-items: end; font-size: 13px;
+}
+.rtlpe .rp-param-field {
+	display: flex; flex-direction: column; gap: 6px; margin: 0; min-width: 0;
+}
+.rtlpe .rp-param-field span { font-size: 12px; color: var(--rp-muted); font-weight: 500; }
+.rtlpe .rp-param-input {
+	width: 100%; max-width: 100%; height: auto; min-height: 34px;
+	padding: 6px 10px; line-height: 1.35; font-size: 13px;
+}
+.rtlpe .rp-param-check {
+	display: inline-flex; align-items: center; gap: 8px; margin: 0;
+	min-height: 34px; cursor: pointer;
+}
+.rtlpe .rp-param-check input[type="checkbox"] { width: auto; height: auto; margin: 0; }
+
+/* Mobile & narrow viewport polish */
+@media (max-width: 768px) {
+	.rtlpe .rp-header { margin: 4px 0 14px; gap: 10px; }
+	.rtlpe .rp-header h2 { font-size: 20px; }
+	.rtlpe .rp-grid, .rtlpe .rp-grid-3 { gap: 12px; margin-bottom: 14px; }
+	.rtlpe .rp-card { padding: 14px; border-radius: 10px; margin-bottom: 14px; }
+	.rtlpe .rp-card-head h3 { font-size: 14px; flex-basis: 100%; }
+	.rtlpe .rp-kpi { font-size: 22px; }
+	.rtlpe .rp-badge { white-space: normal; }
+	.rtlpe .rp-table-wrap { border: 1px solid var(--rp-border); border-radius: 8px; }
+	.rtlpe table.rp-table { font-size: 12px; }
+	.rtlpe table.rp-table th, .rtlpe table.rp-table td { padding: 8px; }
+	.rtlpe .rp-mode-btn { white-space: normal; text-align: center; }
+	.rtlpe .rp-log-tabs { width: 100%; }
+	.rtlpe .rp-log-tabs .rp-tab-btn { flex: 1 1 100px; }
+}
+
+@media (max-width: 480px) {
+	.rtlpe .rp-card { padding: 12px; }
+	.rtlpe .rp-meta-row { grid-template-columns: 1fr; gap: 6px; }
+	.rtlpe .rp-mode-bar .rp-mode-btn { flex: 1 1 100%; }
+	.rtlpe .rp-card-head .cbi-button { width: 100%; }
 }
