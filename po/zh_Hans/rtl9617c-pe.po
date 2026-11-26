@@ -1,0 +1,299 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: luci-app-rtl9617c-pe\n"
+"PO-Revision-Date: 2026-11-26 14:00+0800\n"
+"Last-Translator: RTL9617C Maintainers\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_Hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "%d active"
+msgstr "共 %d 项占用"
+
+msgid "(No log output from this core yet)"
+msgstr "(当前核心暂无日志输出)"
+
+msgid "Action"
+msgstr "操作"
+
+msgid "All Off (Power Saving)"
+msgstr "全部关闭（节能）"
+
+msgid "All PE offload features disabled; PE0/PE1 have been reset and clock-gated."
+msgstr "已一键关闭所有 PE 卸载功能，PE0/PE1 已复位并关钟省电。"
+
+msgid "Applied PE data-plane queue & shaping parameters (FQ Shaping=%d kbps, ECN=%d)."
+msgstr "已应用 PE 数据面队列与整形参数（FQ 整形=%d kbps, ECN=%d）。"
+
+msgid "Assign PE0/PE1 to hardware Wi-Fi offload"
+msgstr "将 PE0/PE1 切换给硬件 Wi-Fi 卸载"
+
+msgid "Assigned \"%s\" to PE%d."
+msgstr "已将「%s」分配到 PE%d。"
+
+msgid "Available"
+msgstr "可用"
+
+msgid "Clock-Gated"
+msgstr "已关钟省电"
+
+msgid "CoDel Target Delay (us)"
+msgstr "CoDel 目标延迟 (us)"
+
+msgid "Core"
+msgstr "挂载核"
+
+msgid "Current Operating Mode"
+msgstr "当前工作模式"
+
+msgid "DMA VP: %s"
+msgstr "DMA VP: %s"
+
+msgid "Disable"
+msgstr "一键关闭"
+
+msgid "Disable All & Save Power"
+msgstr "一键关闭全部并省电"
+
+msgid "Disabled"
+msgstr "未启用"
+
+msgid "Disabled PE offload for \"%s\"."
+msgstr "已关闭「%s」的 PE 卸载。"
+
+msgid "Driver Not Loaded"
+msgstr "驱动未加载"
+
+msgid "Driver Ready"
+msgstr "驱动就绪"
+
+msgid "Enable"
+msgstr "启用"
+
+msgid "Enable ECN CE Marking"
+msgstr "启用 ECN CE 标记"
+
+msgid "Enabled non-exclusive offload features (idle cores are clock-gated automatically)"
+msgstr "已启用非独占卸载功能数（空闲核自动关钟省电）"
+
+msgid "Enabled on PE%d: \"%s\"."
+msgstr "已在 PE%d 上启用「%s」。"
+
+msgid "Enqueue / Bypass: %s / %s"
+msgstr "入队/旁路: %s / %s"
+
+msgid "FQ-CoDel Shaping Rate (kbps, 0=unlimited)"
+msgstr "FQ-CoDel 整形带宽 (kbps, 0=不限)"
+
+msgid "Fault Protected"
+msgstr "故障已保护"
+
+msgid "Feature Mask:"
+msgstr "特性掩码:"
+
+msgid "Framework Placeholder"
+msgstr "仅框架占位"
+
+msgid "Framework reserved; the 0x90500000 crypto engine is managed by kernel rtk-taurus-crypto and encryption runs on ARMv8 AES-CE"
+msgstr "框架保留；当前 0x90500000 密码引擎由内核 rtk-taurus-crypto 管理，加解密由 ARMv8 AES-CE 承担"
+
+msgid "Framework reserved; variable-length SRv6 encapsulation is handled by the kernel network stack and FE flow entries"
+msgstr "框架保留；当前变长 SRv6 封装由内核网络栈与 FE 表项协同承担"
+
+msgid "General Data-Plane Offload (Shared)"
+msgstr "通用数据面卸载（非独占共存）"
+
+msgid "General Wired Data-Plane Offload"
+msgstr "通用有线数据面卸载"
+
+msgid "Hardware Direct"
+msgstr "硬件直通"
+
+msgid "Hardware FQ-CoDel Fair Queueing"
+msgstr "FQ-CoDel 硬件公平队列"
+
+msgid "Hardware Multicast Queue Offload"
+msgstr "组播队列硬件直发"
+
+msgid "Hardware Offload"
+msgstr "硬件加速与卸载"
+
+msgid "Hardware Wi-Fi Offload (WFO)"
+msgstr "硬件 Wi-Fi 卸载 (WFO)"
+
+msgid "Hooked into NI TX and DMA LSO VP direct-transmit engine; coexists with other wired offloads on the same core"
+msgstr "已接入 NI TX 钩子与 DMA LSO VP 直发引擎，可与其他有线卸载同核共存"
+
+msgid "IPsec ESP Offload Framework"
+msgstr "IPsec ESP 卸载框架"
+
+msgid "Idle Ready"
+msgstr "空载就绪"
+
+msgid "In \"General Data-Plane Offload\" mode, multiple wired offload features share the same bare-metal firmware without exclusive conflict. When a PE core has no active features, it is automatically reset and clock-gated (PD_OFFLOAD) to reduce power consumption and heat."
+msgstr "在“通用数据面卸载”模式下，多个有线卸载功能共享同一份裸机固件，无独占冲突；某颗 PE 没有任何功能占用时会自动复位并关闭其时钟（PD_OFFLOAD）以降低功耗与发热。"
+
+msgid "Monitor PE0/PE1 real-time clocks, DMA VP hardware direct queues, and AQM drop/ECN counters with live core migration and power-saving clock gating."
+msgstr "监控 PE0 / PE1 实时主频、DMA VP 硬件直通队列、AQM 丢包/ECN 统计，支持无重启热迁移与节能关钟。"
+
+msgid "Multicast Pacing Rate (kbps, 0=unlimited)"
+msgstr "组播平滑限速 (kbps, 0=不限)"
+
+msgid "No features assigned (idle power-saving)"
+msgstr "无功能占用（空闲省电）"
+
+msgid "No wireless NIC on this device (wired data-plane offload only)"
+msgstr "当前机型无无线网卡（仅启用有线数据面卸载）"
+
+msgid "Offload Feature"
+msgstr "卸载功能"
+
+msgid "On wireless models in the same SoC family with WFO firmware installed, you can switch to Wi-Fi hardware offload here."
+msgstr "同家族无线机型接入 WFO 固件后，可在此一键切换无线硬件卸载。"
+
+msgid "Operation failed: %s"
+msgstr "操作失败: %s"
+
+msgid "Owner Module"
+msgstr "归属模块"
+
+msgid "PE AXI Bus: %s · %s"
+msgstr "PE AXI 总线: %s · %s"
+
+msgid "PE Bare-Metal Runtime Log (Live Ring Buffer)"
+msgstr "PE 裸机运行日志（实时环形缓冲）"
+
+msgid "PE Coprocessor Dashboard"
+msgstr "PE 协处理器看板"
+
+msgid "PE Core Frequency"
+msgstr "PE 核心频率"
+
+msgid "PE FQ-CoDel & Multicast Data-Plane Parameters (1ns PTP Hardware Timer)"
+msgstr "PE FQ-CoDel 与组播数据面参数（1ns PTP 硬件定时）"
+
+msgid "PE Feature Allocation (One-Click Disable & Live Core Migration)"
+msgstr "PE 功能占用明细（支持一键关闭与动态迁移核心）"
+
+msgid "PE Role Mode & One-Click Release"
+msgstr "PE 角色模式与一键释放"
+
+msgid "PE%d Coprocessor"
+msgstr "PE%d 协处理器"
+
+msgid "PE%d MIPS-I self-test passed (CRC verified)."
+msgstr "PE%d MIPS-I 自检通过（CRC 校验一致）。"
+
+msgid "PE0 Log"
+msgstr "PE0 日志"
+
+msgid "PE1 Log"
+msgstr "PE1 日志"
+
+msgid "Packets / Traffic / AQM"
+msgstr "报文 / 流量 / AQM"
+
+msgid "Please ensure rtl9617c-pe-offload is installed and restart rpcd."
+msgstr "请确认已安装 rtl9617c-pe-offload 并重启 rpcd 服务。"
+
+msgid "Port Shaping & Queueing"
+msgstr "网口总限速与排队"
+
+msgid "Power Saving (All Off)"
+msgstr "节能关闭（全停）"
+
+msgid "Queue %s · Drops %s · ECN %s"
+msgstr "队列 %s · 丢包 %s · ECN %s"
+
+msgid "RPC error: %s"
+msgstr "调用异常: %s"
+
+msgid "Run 8000 rounds of FNV-1a verification on PE%d to test real compute throughput and utilization reporting"
+msgstr "向 PE%d 发送 8000 轮 FNV-1a 校验以验证实机算力与占用率统计"
+
+msgid "Running"
+msgstr "运行中"
+
+msgid "Runs 64-queue FQ-CoDel in PE bypass (with 1ns PTP-timed shaping and ECN marking) to eliminate uplink/proxy bufferbloat"
+msgstr "在 PE 旁路运行 64 队列 FQ-CoDel（支持 1ns PTP 定时整形与 ECN 标记），消除上行/代理路径缓冲膨胀"
+
+msgid "SRv6 / Variable Tunnel Header Framework"
+msgstr "SRv6 / 变长隧道头框架"
+
+msgid "Save & Apply Live"
+msgstr "保存并热生效"
+
+msgid "Self-Test"
+msgstr "核自检"
+
+msgid "Standby"
+msgstr "待机"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Status placeholder only (crypto runs on kernel ARMv8 AES-CE, not bound to PE DMA TX path)"
+msgstr "仅状态占位（实机密码由内核 ARMv8 AES-CE 执行，未绑定 PE DMA TX 路径）"
+
+msgid "Status placeholder only (not currently bound to PE DMA TX path)"
+msgstr "仅状态占位（当前未绑定 PE DMA TX 路径）"
+
+msgid "Stopped"
+msgstr "已停止"
+
+msgid "Switched to Wi-Fi hardware offload mode."
+msgstr "已切换为 Wi-Fi 硬件卸载模式。"
+
+msgid "Switched to general wired data-plane offload mode."
+msgstr "已切换为通用有线数据面卸载模式。"
+
+msgid "Switched to power-saving off mode; PE0/PE1 clock-gated."
+msgstr "已切换为节能关闭模式，PE0/PE1 关钟。"
+
+msgid "Takes over host-originated multicast/broadcast packets via PE and a dedicated DMA LSO VP with optional rate pacing"
+msgstr "接管主机侧发送的组播/广播报文，经 PE 与独立 DMA LSO VP 发送并支持可选速率平滑"
+
+msgid "Tip: If your actual GPON/EPON uplink is around 250 Mbps and proxied uploads trigger upstream bufferbloat, set the FQ-CoDel shaping rate slightly below measured capacity (e.g. 235000 kbps) so the bottleneck queue stays inside PE CoDel. Set to 0 for 64-flow fair queueing and lossless pass-through."
+msgstr "提示：若光猫上行实际带宽约 250 Mbps 且经代理上传触发上游缓存延迟飙升，可将 FQ-CoDel 整形带宽设为略低于实测上限（如 235000 kbps）以将瓶颈队列锁定在 PE CoDel 中；设为 0 则仅做 64 流公平调度与无损直发。"
+
+msgid "Unable to connect to luci.rtl9617c-pe service"
+msgstr "无法连接 luci.rtl9617c-pe 服务"
+
+msgid "Unavailable"
+msgstr "不可用"
+
+msgid "Unbound"
+msgstr "未绑定"
+
+msgid "Unknown error"
+msgstr "未知错误"
+
+msgid "Uptime: %s"
+msgstr "运行时长: %s"
+
+msgid "Utilization"
+msgstr "功能占用率"
+
+msgid "VP%s Ready"
+msgstr "VP%s 就绪"
+
+msgid "VPN Hardware Offload"
+msgstr "VPN 硬件加速"
+
+msgid "Watchdog Heartbeat: %s"
+msgstr "看门狗心跳: %s"
+
+msgid "Wi-Fi Hardware Offload"
+msgstr "Wi-Fi 硬件卸载"
+
+msgid "Wireless Offload Detection"
+msgstr "无线卸载探测"
+
+msgid "Wireless detected (%s) · WFO firmware not installed"
+msgstr "检测到无线 (%s) · 未装 WFO 固件"
+
+msgid "Wireless ready (%s) · WFO supported"
+msgstr "无线就绪 (%s) · 支持 WFO"

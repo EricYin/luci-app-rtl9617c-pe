@@ -1,0 +1,294 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: luci-app-rtl9617c-pe\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "%d active"
+msgstr ""
+
+msgid "(No log output from this core yet)"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "All Off (Power Saving)"
+msgstr ""
+
+msgid "All PE offload features disabled; PE0/PE1 have been reset and clock-gated."
+msgstr ""
+
+msgid "Applied PE data-plane queue & shaping parameters (FQ Shaping=%d kbps, ECN=%d)."
+msgstr ""
+
+msgid "Assign PE0/PE1 to hardware Wi-Fi offload"
+msgstr ""
+
+msgid "Assigned \"%s\" to PE%d."
+msgstr ""
+
+msgid "Available"
+msgstr ""
+
+msgid "Clock-Gated"
+msgstr ""
+
+msgid "CoDel Target Delay (us)"
+msgstr ""
+
+msgid "Core"
+msgstr ""
+
+msgid "Current Operating Mode"
+msgstr ""
+
+msgid "DMA VP: %s"
+msgstr ""
+
+msgid "Disable"
+msgstr ""
+
+msgid "Disable All & Save Power"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "Disabled PE offload for \"%s\"."
+msgstr ""
+
+msgid "Driver Not Loaded"
+msgstr ""
+
+msgid "Driver Ready"
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid "Enable ECN CE Marking"
+msgstr ""
+
+msgid "Enabled non-exclusive offload features (idle cores are clock-gated automatically)"
+msgstr ""
+
+msgid "Enabled on PE%d: \"%s\"."
+msgstr ""
+
+msgid "Enqueue / Bypass: %s / %s"
+msgstr ""
+
+msgid "FQ-CoDel Shaping Rate (kbps, 0=unlimited)"
+msgstr ""
+
+msgid "Fault Protected"
+msgstr ""
+
+msgid "Feature Mask:"
+msgstr ""
+
+msgid "Framework Placeholder"
+msgstr ""
+
+msgid "Framework reserved; the 0x90500000 crypto engine is managed by kernel rtk-taurus-crypto and encryption runs on ARMv8 AES-CE"
+msgstr ""
+
+msgid "Framework reserved; variable-length SRv6 encapsulation is handled by the kernel network stack and FE flow entries"
+msgstr ""
+
+msgid "General Data-Plane Offload (Shared)"
+msgstr ""
+
+msgid "General Wired Data-Plane Offload"
+msgstr ""
+
+msgid "Hardware Direct"
+msgstr ""
+
+msgid "Hardware FQ-CoDel Fair Queueing"
+msgstr ""
+
+msgid "Hardware Multicast Queue Offload"
+msgstr ""
+
+msgid "Hardware Offload"
+msgstr ""
+
+msgid "Hardware Wi-Fi Offload (WFO)"
+msgstr ""
+
+msgid "Hooked into NI TX and DMA LSO VP direct-transmit engine; coexists with other wired offloads on the same core"
+msgstr ""
+
+msgid "IPsec ESP Offload Framework"
+msgstr ""
+
+msgid "Idle Ready"
+msgstr ""
+
+msgid "In \"General Data-Plane Offload\" mode, multiple wired offload features share the same bare-metal firmware without exclusive conflict. When a PE core has no active features, it is automatically reset and clock-gated (PD_OFFLOAD) to reduce power consumption and heat."
+msgstr ""
+
+msgid "Monitor PE0/PE1 real-time clocks, DMA VP hardware direct queues, and AQM drop/ECN counters with live core migration and power-saving clock gating."
+msgstr ""
+
+msgid "Multicast Pacing Rate (kbps, 0=unlimited)"
+msgstr ""
+
+msgid "No features assigned (idle power-saving)"
+msgstr ""
+
+msgid "No wireless NIC on this device (wired data-plane offload only)"
+msgstr ""
+
+msgid "Offload Feature"
+msgstr ""
+
+msgid "On wireless models in the same SoC family with WFO firmware installed, you can switch to Wi-Fi hardware offload here."
+msgstr ""
+
+msgid "Operation failed: %s"
+msgstr ""
+
+msgid "Owner Module"
+msgstr ""
+
+msgid "PE AXI Bus: %s · %s"
+msgstr ""
+
+msgid "PE Bare-Metal Runtime Log (Live Ring Buffer)"
+msgstr ""
+
+msgid "PE Coprocessor Dashboard"
+msgstr ""
+
+msgid "PE Core Frequency"
+msgstr ""
+
+msgid "PE FQ-CoDel & Multicast Data-Plane Parameters (1ns PTP Hardware Timer)"
+msgstr ""
+
+msgid "PE Feature Allocation (One-Click Disable & Live Core Migration)"
+msgstr ""
+
+msgid "PE Role Mode & One-Click Release"
+msgstr ""
+
+msgid "PE%d Coprocessor"
+msgstr ""
+
+msgid "PE%d MIPS-I self-test passed (CRC verified)."
+msgstr ""
+
+msgid "PE0 Log"
+msgstr ""
+
+msgid "PE1 Log"
+msgstr ""
+
+msgid "Packets / Traffic / AQM"
+msgstr ""
+
+msgid "Please ensure rtl9617c-pe-offload is installed and restart rpcd."
+msgstr ""
+
+msgid "Port Shaping & Queueing"
+msgstr ""
+
+msgid "Power Saving (All Off)"
+msgstr ""
+
+msgid "Queue %s · Drops %s · ECN %s"
+msgstr ""
+
+msgid "RPC error: %s"
+msgstr ""
+
+msgid "Run 8000 rounds of FNV-1a verification on PE%d to test real compute throughput and utilization reporting"
+msgstr ""
+
+msgid "Running"
+msgstr ""
+
+msgid "Runs 64-queue FQ-CoDel in PE bypass (with 1ns PTP-timed shaping and ECN marking) to eliminate uplink/proxy bufferbloat"
+msgstr ""
+
+msgid "SRv6 / Variable Tunnel Header Framework"
+msgstr ""
+
+msgid "Save & Apply Live"
+msgstr ""
+
+msgid "Self-Test"
+msgstr ""
+
+msgid "Standby"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Status placeholder only (crypto runs on kernel ARMv8 AES-CE, not bound to PE DMA TX path)"
+msgstr ""
+
+msgid "Status placeholder only (not currently bound to PE DMA TX path)"
+msgstr ""
+
+msgid "Stopped"
+msgstr ""
+
+msgid "Switched to Wi-Fi hardware offload mode."
+msgstr ""
+
+msgid "Switched to general wired data-plane offload mode."
+msgstr ""
+
+msgid "Switched to power-saving off mode; PE0/PE1 clock-gated."
+msgstr ""
+
+msgid "Takes over host-originated multicast/broadcast packets via PE and a dedicated DMA LSO VP with optional rate pacing"
+msgstr ""
+
+msgid "Tip: If your actual GPON/EPON uplink is around 250 Mbps and proxied uploads trigger upstream bufferbloat, set the FQ-CoDel shaping rate slightly below measured capacity (e.g. 235000 kbps) so the bottleneck queue stays inside PE CoDel. Set to 0 for 64-flow fair queueing and lossless pass-through."
+msgstr ""
+
+msgid "Unable to connect to luci.rtl9617c-pe service"
+msgstr ""
+
+msgid "Unavailable"
+msgstr ""
+
+msgid "Unbound"
+msgstr ""
+
+msgid "Unknown error"
+msgstr ""
+
+msgid "Uptime: %s"
+msgstr ""
+
+msgid "Utilization"
+msgstr ""
+
+msgid "VP%s Ready"
+msgstr ""
+
+msgid "VPN Hardware Offload"
+msgstr ""
+
+msgid "Watchdog Heartbeat: %s"
+msgstr ""
+
+msgid "Wi-Fi Hardware Offload"
+msgstr ""
+
+msgid "Wireless Offload Detection"
+msgstr ""
+
+msgid "Wireless detected (%s) · WFO firmware not installed"
+msgstr ""
+
+msgid "Wireless ready (%s) · WFO supported"
+msgstr ""

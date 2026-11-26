@@ -1,6 +1,6 @@
 {
 	"admin/network/rtl9617c_pe": {
-		"title": "PE 协处理器看板",
+		"title": "PE Coprocessor Dashboard",
 		"order": 57,
 		"action": {
 			"type": "view",

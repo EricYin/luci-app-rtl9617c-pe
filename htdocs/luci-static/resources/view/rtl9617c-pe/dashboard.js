@@ -51,7 +51,7 @@ function ensureCss() {
 	var link = document.createElement('link');
 	link.id = 'rtl9617c-pe-css';
 	link.rel = 'stylesheet';
-	link.href = L.resource('rtl9617c-pe/pe.css') + '?v=20261126b';
+	link.href = L.resource('rtl9617c-pe/pe.css') + '?v=20261126c';
 	document.head.appendChild(link);
 }
 
@@ -137,14 +137,14 @@ return view.extend({
 		return promise.then(function(res) {
 			self.busyAction = false;
 			if (res && res.ok === false) {
-				ui.addNotification(null, E('p', '操作失败: ' + (res.error || '未知错误')), 'warning');
+				ui.addNotification(null, E('p', _('Operation failed: %s').format(res.error ? _(res.error) : _('Unknown error'))), 'warning');
 			} else if (okMsg) {
 				ui.addNotification(null, E('p', okMsg), 'info');
 			}
 			return self.refreshNow();
 		}).catch(function(err) {
 			self.busyAction = false;
-			ui.addNotification(null, E('p', '调用异常: ' + (err && err.message ? err.message : String(err))), 'danger');
+			ui.addNotification(null, E('p', _('RPC error: %s').format(err && err.message ? err.message : String(err))), 'danger');
 		});
 	},
 
@@ -171,83 +171,83 @@ return view.extend({
 		/* 1. Top hardware KPI summary */
 		var wifiText, wifiTone;
 		if (wifi.wfo_available) {
-			wifiText = '无线就绪 (' + (wifi.phys || []).join(', ') + ') · 支持 WFO';
+			wifiText = _('Wireless ready (%s) · WFO supported').format((wifi.phys || []).join(', '));
 			wifiTone = 'good';
 		} else if (wifi.present) {
-			wifiText = '检测到无线 (' + (wifi.phys || []).join(', ') + ') · 未装 WFO 固件';
+			wifiText = _('Wireless detected (%s) · WFO firmware not installed').format((wifi.phys || []).join(', '));
 			wifiTone = 'warn';
 		} else {
-			wifiText = '当前机型无无线网卡（仅启用有线数据面卸载）';
+			wifiText = _('No wireless NIC on this device (wired data-plane offload only)');
 			wifiTone = '';
 		}
 
 		var modeLabel = st.mode === 'wifi_wfo'
-			? 'Wi-Fi 硬件卸载'
-			: (st.mode === 'off' ? '全部关闭（节能）' : '通用有线数据面卸载');
+			? _('Wi-Fi Hardware Offload')
+			: (st.mode === 'off' ? _('All Off (Power Saving)') : _('General Wired Data-Plane Offload'));
 
 		var summaryGrid = E('div', { 'class': 'rp-grid-3' }, [
 			E('div', { 'class': 'rp-card' }, [
 				E('div', { 'class': 'rp-card-head' }, [
-					E('h3', 'PE 核心频率'),
-					badge(st.driver_loaded ? '驱动就绪' : '驱动未加载', st.driver_loaded ? 'good' : 'danger')
+					E('h3', _('PE Core Frequency')),
+					badge(st.driver_loaded ? _('Driver Ready') : _('Driver Not Loaded'), st.driver_loaded ? 'good' : 'danger')
 				]),
 				E('div', { 'class': 'rp-kpi' }, fmtMhz(st.pe_clk_hz)),
-				E('div', { 'class': 'rp-kpi-sub' }, 'PE AXI 总线: ' + fmtMhz(st.peaxi_clk_hz) + ' · ' + (st.arch || 'Taroko MIPS-I'))
+				E('div', { 'class': 'rp-kpi-sub' }, _('PE AXI Bus: %s · %s').format(fmtMhz(st.peaxi_clk_hz), st.arch || 'Taroko MIPS-I'))
 			]),
 			E('div', { 'class': 'rp-card' }, [
 				E('div', { 'class': 'rp-card-head' }, [
-					E('h3', '当前工作模式'),
+					E('h3', _('Current Operating Mode')),
 					badge(modeLabel, anyRunning ? 'good' : '')
 				]),
 				E('div', { 'class': 'rp-kpi' }, String(activeFeatures.length) + ' / ' + String(features.length)),
-				E('div', { 'class': 'rp-kpi-sub' }, '已启用非独占卸载功能数（空闲核自动关钟省电）')
+				E('div', { 'class': 'rp-kpi-sub' }, _('Enabled non-exclusive offload features (idle cores are clock-gated automatically)'))
 			]),
 			E('div', { 'class': 'rp-card' }, [
 				E('div', { 'class': 'rp-card-head' }, [
-					E('h3', '无线卸载探测'),
-					badge(wifi.wfo_available ? '可用' : '不可用', wifiTone)
+					E('h3', _('Wireless Offload Detection')),
+					badge(wifi.wfo_available ? _('Available') : _('Unavailable'), wifiTone)
 				]),
 				E('div', { 'class': 'rp-note', 'style': 'margin-top:2px;font-size:13px;color:var(--rp-text)' }, wifiText),
-				E('div', { 'class': 'rp-note' }, '同家族无线机型接入 WFO 固件后，可在此一键切换无线硬件卸载。')
+				E('div', { 'class': 'rp-note' }, _('On wireless models in the same SoC family with WFO firmware installed, you can switch to Wi-Fi hardware offload here.'))
 			])
 		]);
 
 		/* 2. Mode selection bar + One-click disable all */
 		var modeCard = E('div', { 'class': 'rp-card' }, [
 			E('div', { 'class': 'rp-card-head' }, [
-				E('h3', 'PE 角色模式与一键释放'),
+				E('h3', _('PE Role Mode & One-Click Release')),
 				E('button', {
 					'class': 'cbi-button cbi-button-remove',
 					'disabled': (!anyRunning && activeFeatures.length === 0) ? 'disabled' : null,
 					'click': function() {
-						self.runAction(callDisableAll(), '已一键关闭所有 PE 卸载功能，PE0/PE1 已复位并关钟省电。');
+						self.runAction(callDisableAll(), _('All PE offload features disabled; PE0/PE1 have been reset and clock-gated.'));
 					}
-				}, '一键关闭全部并省电')
+				}, _('Disable All & Save Power'))
 			]),
 			E('div', { 'class': 'rp-mode-bar' }, [
 				E('button', {
 					'class': 'rp-mode-btn' + (st.mode === 'off' ? ' is-active' : ''),
 					'click': function() {
-						self.runAction(callSetMode('off'), '已切换为节能关闭模式，PE0/PE1 关钟。');
+						self.runAction(callSetMode('off'), _('Switched to power-saving off mode; PE0/PE1 clock-gated.'));
 					}
-				}, '节能关闭（全停）'),
+				}, _('Power Saving (All Off)')),
 				E('button', {
 					'class': 'rp-mode-btn' + (st.mode === 'offload' ? ' is-active' : ''),
 					'click': function() {
-						self.runAction(callSetMode('offload'), '已切换为通用有线数据面卸载模式。');
+						self.runAction(callSetMode('offload'), _('Switched to general wired data-plane offload mode.'));
 					}
-				}, '通用数据面卸载（非独占共存）'),
+				}, _('General Data-Plane Offload (Shared)')),
 				E('button', {
 					'class': 'rp-mode-btn' + (st.mode === 'wifi_wfo' ? ' is-active' : ''),
 					'disabled': wifi.wfo_available ? null : 'disabled',
-					'title': wifi.wfo_available ? '将 PE0/PE1 切换给硬件 Wi-Fi 卸载' : wifiText,
+					'title': wifi.wfo_available ? _('Assign PE0/PE1 to hardware Wi-Fi offload') : wifiText,
 					'click': function() {
-						self.runAction(callSetMode('wifi_wfo'), '已切换为 Wi-Fi 硬件卸载模式。');
+						self.runAction(callSetMode('wifi_wfo'), _('Switched to Wi-Fi hardware offload mode.'));
 					}
-				}, '硬件 Wi-Fi 卸载 (WFO)')
+				}, _('Hardware Wi-Fi Offload (WFO)'))
 			]),
 			E('p', { 'class': 'rp-note' },
-				'在“通用数据面卸载”模式下，多个有线卸载功能共享同一份裸机固件，无独占冲突；某颗 PE 没有任何功能占用时会自动复位并关闭其时钟（PD_OFFLOAD）以降低功耗与发热。')
+				_('In "General Data-Plane Offload" mode, multiple wired offload features share the same bare-metal firmware without exclusive conflict. When a PE core has no active features, it is automatically reset and clock-gated (PD_OFFLOAD) to reduce power consumption and heat.'))
 		]);
 
 		/* 3. Per-core PE0 / PE1 cards */
@@ -255,32 +255,32 @@ return view.extend({
 			var isRun = c.state === 'running';
 			var isFault = c.state === 'fault';
 			var stBadge = isRun
-				? badge('运行中', 'good')
-				: (isFault ? badge('故障已保护', 'danger') : badge(c.clk_gated ? '已关钟省电' : '已停止', ''));
+				? badge(_('Running'), 'good')
+				: (isFault ? badge(_('Fault Protected'), 'danger') : badge(c.clk_gated ? _('Clock-Gated') : _('Stopped'), ''));
 
 			var coreFeats = features.filter(function(f) { return f.enabled && f.pe === c.core; });
 			var pills = coreFeats.length
-				? coreFeats.map(function(f) { return E('span', { 'class': 'rp-pill' }, f.name); })
-				: [ E('span', { 'class': 'rp-note', 'style': 'margin:0' }, isRun ? '空载就绪' : '无功能占用（空闲省电）') ];
+				? coreFeats.map(function(f) { return E('span', { 'class': 'rp-pill' }, _(f.name)); })
+				: [ E('span', { 'class': 'rp-note', 'style': 'margin:0' }, isRun ? _('Idle Ready') : _('No features assigned (idle power-saving)')) ];
 
 			var utilPct = isRun ? (Number(c.util_permille) || 0) : 0;
 
 			return E('div', { 'class': 'rp-card' }, [
 				E('div', { 'class': 'rp-card-head' }, [
-					E('h3', 'PE' + c.core + ' 协处理器'),
+					E('h3', _('PE%d Coprocessor').format(c.core)),
 					E('div', { 'class': 'rp-actions' }, [
 						stBadge,
 						E('button', {
 							'class': 'cbi-button cbi-button-action rp-btn-sm',
 							'disabled': isRun ? null : 'disabled',
-							'title': '向 PE' + c.core + ' 发送 8000 轮 FNV-1a 校验以验证实机算力与占用率统计',
+							'title': _('Run 8000 rounds of FNV-1a verification on PE%d to test real compute throughput and utilization reporting').format(c.core),
 							'click': function() {
 								self.runAction(
 									callSelftest(c.core, 8000),
-									'PE' + c.core + ' MIPS-I 自检通过（CRC 校验一致）。'
+									_('PE%d MIPS-I self-test passed (CRC verified).').format(c.core)
 								);
 							}
-						}, '核自检')
+						}, _('Self-Test'))
 					])
 				]),
 				E('div', { 'style': 'display:flex;align-items:baseline;justify-content:space-between;gap:10px' }, [
@@ -293,24 +293,25 @@ return view.extend({
 				E('div', { 'style': 'margin-top:6px;min-height:26px' }, pills),
 				E('div', { 'class': 'rp-meta-row' }, [
 					E('div', {}, [ 'PrId: ', E('span', { 'class': 'rp-mono' }, isRun ? (c.cp0_prid || '--') : '--') ]),
-					E('div', {}, '运行时长: ' + fmtUptime(c.uptime_ms)),
-					E('div', {}, '看门狗心跳: ' + String(c.heartbeat || 0)),
-					E('div', {}, [ '特性掩码: ', E('span', { 'class': 'rp-mono' }, '0x' + (Number(c.feature_mask) || 0).toString(16)) ]),
-					E('div', {}, 'DMA VP: ' + (c.dma_vp_ready ? ('VP' + c.dma_vp_id + ' 就绪') : '未绑定')),
-					E('div', {}, '入队/旁路: ' + fmtCount(c.dp_enq) + ' / ' + fmtCount(c.dp_bypass))
+					E('div', {}, _('Uptime: %s').format(fmtUptime(c.uptime_ms))),
+					E('div', {}, _('Watchdog Heartbeat: %s').format(String(c.heartbeat || 0))),
+					E('div', {}, [ _('Feature Mask:'), ' ', E('span', { 'class': 'rp-mono' }, '0x' + (Number(c.feature_mask) || 0).toString(16)) ]),
+					E('div', {}, _('DMA VP: %s').format(c.dma_vp_ready ? _('VP%s Ready').format(String(c.dma_vp_id)) : _('Unbound'))),
+					E('div', {}, _('Enqueue / Bypass: %s / %s').format(fmtCount(c.dp_enq), fmtCount(c.dp_bypass)))
 				])
 			]);
 		});
 
 		/* 4. Feature occupancy table */
 		var featRows = features.map(function(f) {
+			var fName = _(f.name);
 			var sel = E('select', {
 				'class': 'rp-sel',
 				'change': function(ev) {
 					var newPe = parseInt(ev.target.value, 10);
 					self.runAction(
 						callSetFeature(f.id, f.enabled, newPe),
-						'已将「' + f.name + '」分配到 PE' + newPe + '。'
+						_('Assigned "%s" to PE%d.').format(fName, newPe)
 					);
 				}
 			}, [
@@ -320,25 +321,25 @@ return view.extend({
 
 			var stCell;
 			if (f.active && f.hw_bound)
-				stCell = badge('硬件直通', 'good');
+				stCell = badge(_('Hardware Direct'), 'good');
 			else if (f.active && !f.hw_bound)
-				stCell = badge('仅框架占位', 'warn');
+				stCell = badge(_('Framework Placeholder'), 'warn');
 			else if (f.enabled)
-				stCell = badge('待机', 'warn');
+				stCell = badge(_('Standby'), 'warn');
 			else
-				stCell = badge('未启用', '');
+				stCell = badge(_('Disabled'), '');
 
 			var statSub = (f.active && f.hw_bound)
 				? E('div', { 'class': 'rp-note', 'style': 'margin-top:2px' },
-					'队列 ' + (f.qdepth || 0) + ' · 丢包 ' + fmtCount(f.drops || 0) + ' · ECN ' + fmtCount(f.ecn_marks || 0))
+					_('Queue %s · Drops %s · ECN %s').format(String(f.qdepth || 0), fmtCount(f.drops || 0), fmtCount(f.ecn_marks || 0)))
 				: null;
 
 			return E('tr', {}, [
 				E('td', { 'class': 'rq-wrap rp-wrap' }, [
-					E('strong', {}, f.name),
-					E('div', { 'class': 'rp-note', 'style': 'margin-top:2px' }, f.desc)
+					E('strong', {}, fName),
+					E('div', { 'class': 'rp-note', 'style': 'margin-top:2px' }, _(f.desc))
 				]),
-				E('td', {}, E('a', { 'href': L.url(f.module_url) }, f.module_title + ' ↗')),
+				E('td', {}, E('a', { 'href': L.url(f.module_url) }, _(f.module_title) + ' ↗')),
 				E('td', {}, sel),
 				E('td', {}, stCell),
 				E('td', { 'class': 'rp-mono' }, fmtPct(f.util_permille)),
@@ -352,38 +353,38 @@ return view.extend({
 						'click': function() {
 							self.runAction(
 								callSetFeature(f.id, false, f.pe),
-								'已关闭「' + f.name + '」的 PE 卸载。'
+								_('Disabled PE offload for "%s".').format(fName)
 							);
 						}
-					}, '一键关闭')
+					}, _('Disable'))
 					: E('button', {
 						'class': 'cbi-button cbi-button-positive rp-btn-sm',
 						'disabled': st.driver_loaded ? null : 'disabled',
 						'click': function() {
 							self.runAction(
 								callSetFeature(f.id, true, f.pe),
-								'已在 PE' + f.pe + ' 上启用「' + f.name + '」。'
+								_('Enabled on PE%d: "%s".').format(f.pe, fName)
 							);
 						}
-					}, '启用'))
+					}, _('Enable')))
 			]);
 		});
 
 		var featCard = E('div', { 'class': 'rp-card' }, [
 			E('div', { 'class': 'rp-card-head' }, [
-				E('h3', 'PE 功能占用明细（支持一键关闭与动态迁移核心）'),
-				badge('共 ' + String(activeFeatures.length) + ' 项占用', activeFeatures.length ? 'good' : '')
+				E('h3', _('PE Feature Allocation (One-Click Disable & Live Core Migration)')),
+				badge(_('%d active').format(activeFeatures.length), activeFeatures.length ? 'good' : '')
 			]),
 			E('div', { 'class': 'rp-table-wrap' }, [
 				E('table', { 'class': 'rp-table' }, [
 					E('thead', {}, E('tr', {}, [
-						E('th', {}, '卸载功能'),
-						E('th', {}, '归属模块'),
-						E('th', {}, '挂载核'),
-						E('th', {}, '状态'),
-						E('th', {}, '功能占用率'),
-						E('th', {}, '报文 / 流量 / AQM'),
-						E('th', {}, '操作')
+						E('th', {}, _('Offload Feature')),
+						E('th', {}, _('Owner Module')),
+						E('th', {}, _('Core')),
+						E('th', {}, _('Status')),
+						E('th', {}, _('Utilization')),
+						E('th', {}, _('Packets / Traffic / AQM')),
+						E('th', {}, _('Action'))
 					])),
 					E('tbody', {}, featRows)
 				])
@@ -393,29 +394,29 @@ return view.extend({
 		/* 5. Live PE ring log viewer */
 		var logCard = E('div', { 'class': 'rp-card' }, [
 			E('div', { 'class': 'rp-card-head' }, [
-				E('h3', 'PE 裸机运行日志（实时环形缓冲）'),
+				E('h3', _('PE Bare-Metal Runtime Log (Live Ring Buffer)')),
 				E('div', { 'class': 'rp-log-tabs' }, [
 					E('button', {
 						'type': 'button',
 						'class': 'rp-tab-btn' + (self.activeLogCore === 0 ? ' is-active' : ''),
 						'click': function() { self.activeLogCore = 0; self.refreshNow(); }
-					}, 'PE0 日志'),
+					}, _('PE0 Log')),
 					E('button', {
 						'type': 'button',
 						'class': 'rp-tab-btn' + (self.activeLogCore === 1 ? ' is-active' : ''),
 						'click': function() { self.activeLogCore = 1; self.refreshNow(); }
-					}, 'PE1 日志')
+					}, _('PE1 Log'))
 				])
 			]),
-			E('pre', { 'class': 'rp-log rp-mono' }, logText && logText.length ? logText : '(当前核心暂无日志输出)')
+			E('pre', { 'class': 'rp-log rp-mono' }, logText && logText.length ? logText : _('(No log output from this core yet)'))
 		]);
 
 		dom.content(self.dynNode || self.rootNode, [
 			E('div', { 'class': 'rp-header' }, [
 				E('div', {}, [
 					E('div', { 'class': 'rp-eyebrow' }, 'RTL9617C TAURUS COPROCESSOR'),
-					E('h2', {}, 'PE 协处理器看板'),
-					E('div', { 'class': 'rp-note' }, '监控 PE0 / PE1 实时主频、DMA VP 硬件直通队列、AQM 丢包/ECN 统计，支持无重启热迁移与节能关钟。')
+					E('h2', {}, _('PE Coprocessor Dashboard')),
+					E('div', { 'class': 'rp-note' }, _('Monitor PE0/PE1 real-time clocks, DMA VP hardware direct queues, and AQM drop/ECN counters with live core migration and power-saving clock gating.'))
 				])
 			]),
 			summaryGrid,
@@ -451,7 +452,7 @@ return view.extend({
 
 		return E('div', { 'class': 'rp-card' }, [
 			E('div', { 'class': 'rp-card-head' }, [
-				E('h3', 'PE FQ-CoDel 与组播数据面参数（1ns PTP 硬件定时）'),
+				E('h3', _('PE FQ-CoDel & Multicast Data-Plane Parameters (1ns PTP Hardware Timer)')),
 				E('button', {
 					'type': 'button',
 					'class': 'cbi-button cbi-button-apply',
@@ -462,19 +463,19 @@ return view.extend({
 						var ecn = inpEcn.checked ? 1 : 0;
 						self.runAction(
 							callSetParams(rq, tq, ecn, mq),
-							'已应用 PE 数据面队列与整形参数（FQ 整形=' + rq + ' kbps, ECN=' + ecn + '）。'
+							_('Applied PE data-plane queue & shaping parameters (FQ Shaping=%d kbps, ECN=%d).').format(rq, ecn)
 						);
 					}
-				}, '保存并热生效')
+				}, _('Save & Apply Live'))
 			]),
 			E('div', { 'class': 'rp-param-grid' }, [
-				E('label', { 'class': 'rp-param-field' }, [ E('span', {}, 'FQ-CoDel 整形带宽 (kbps, 0=不限)'), inpFqRate ]),
-				E('label', { 'class': 'rp-param-field' }, [ E('span', {}, 'CoDel 目标延迟 (us)'), inpFqTarget ]),
-				E('label', { 'class': 'rp-param-field' }, [ E('span', {}, '组播平滑限速 (kbps, 0=不限)'), inpMcastRate ]),
-				E('label', { 'class': 'rp-param-check' }, [ inpEcn, E('span', {}, '启用 ECN CE 标记') ])
+				E('label', { 'class': 'rp-param-field' }, [ E('span', {}, _('FQ-CoDel Shaping Rate (kbps, 0=unlimited)')), inpFqRate ]),
+				E('label', { 'class': 'rp-param-field' }, [ E('span', {}, _('CoDel Target Delay (us)')), inpFqTarget ]),
+				E('label', { 'class': 'rp-param-field' }, [ E('span', {}, _('Multicast Pacing Rate (kbps, 0=unlimited)')), inpMcastRate ]),
+				E('label', { 'class': 'rp-param-check' }, [ inpEcn, E('span', {}, _('Enable ECN CE Marking')) ])
 			]),
 			E('div', { 'class': 'rp-note', 'style': 'margin-top:8px' },
-				'提示：若光猫上行实际带宽约 250 Mbps 且经代理上传触发上游缓存延迟飙升，可将 FQ-CoDel 整形带宽设为略低于实测上限（如 235000 kbps）以将瓶颈队列锁定在 PE CoDel 中；设为 0 则仅做 64 流公平调度与无损直发。')
+				_('Tip: If your actual GPON/EPON uplink is around 250 Mbps and proxied uploads trigger upstream bufferbloat, set the FQ-CoDel shaping rate slightly below measured capacity (e.g. 235000 kbps) so the bottleneck queue stays inside PE CoDel. Set to 0 for 64-flow fair queueing and lossless pass-through.'))
 		]);
 	},
 
@@ -490,8 +491,8 @@ return view.extend({
 			self.renderDashboard(st, logText);
 		} else {
 			dom.content(self.dynNode, E('div', { 'class': 'rp-card' }, [
-				E('h3', {}, '无法连接 luci.rtl9617c-pe 服务'),
-				E('p', { 'class': 'rp-note' }, '请确认已安装 rtl9617c-pe-offload 并重启 rpcd 服务。')
+				E('h3', {}, _('Unable to connect to luci.rtl9617c-pe service')),
+				E('p', { 'class': 'rp-note' }, _('Please ensure rtl9617c-pe-offload is installed and restart rpcd.'))
 			]));
 		}
 
