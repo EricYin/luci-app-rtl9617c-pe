@@ -176,5 +176,5 @@
 	.rtlpe .rp-card { padding: 12px; }
 	.rtlpe .rp-meta-row { grid-template-columns: 1fr; gap: 6px; }
 	.rtlpe .rp-mode-bar .rp-mode-btn { flex: 1 1 100%; }
-	.rtlpe .rp-card-head .cbi-button { width: 100%; }
+	.rtlpe .rp-card-head .cbi-button { width: 100% !important; }
 }
