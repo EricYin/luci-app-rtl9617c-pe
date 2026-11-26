@@ -51,7 +51,7 @@ function ensureCss() {
 	var link = document.createElement('link');
 	link.id = 'rtl9617c-pe-css';
 	link.rel = 'stylesheet';
-	link.href = L.resource('rtl9617c-pe/pe.css') + '?v=20261126c';
+	link.href = L.resource('rtl9617c-pe/pe.css') + '?v=20261126d';
 	document.head.appendChild(link);
 }
 
