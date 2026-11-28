@@ -88,6 +88,7 @@ html[data-argon-mode="dark"] .rtlpe {
 	flex-wrap: wrap; gap: 14px; margin: 6px 0 18px;
 }
 /* Argon paints a 2rem header::after primary banner behind #maincontent; elevate hero into a native card. */
+html[data-argon-mode] #view > .rtlpe { gap: 0; }
 html[data-argon-mode] .rtlpe .rp-header {
 	margin: 0 0 18px;
 	padding: 18px 22px;
@@ -95,6 +96,15 @@ html[data-argon-mode] .rtlpe .rp-header {
 	border-radius: var(--rp-radius);
 	background: var(--rp-surface);
 	box-shadow: var(--rp-shadow);
+}
+html[data-argon-mode] .rtlpe .rp-card > h3 {
+	margin: 0 0 8px; padding: 0; border: 0; width: auto; border-radius: 0;
+	box-shadow: none; background: none; font-size: var(--v-fs-md, 15px); font-weight: 600;
+	color: var(--rp-text);
+}
+html[data-argon-mode] .rtlpe label > input[type="checkbox"],
+html[data-argon-mode] .rtlpe label > input[type="radio"] {
+	position: static; top: auto; right: auto; vertical-align: middle; flex: none; margin: 0;
 }
 html[data-argon-mode] .rtlpe :is(.cbi-button, .btn):not(.cbi-button-apply):not(.cbi-button-action):not(.cbi-button-positive):not(.cbi-button-add):not(.cbi-button-save):not(.cbi-button-remove):not(.cbi-button-negative):not(.cbi-button-reset):not(.cbi-button-success):not(.cbi-button-download):not(.cbi-button-edit):not(.cbi-button-reload):not(.cbi-button-link):not(.primary):not(.danger):not(.btn-danger) {
 	background-color: var(--rp-btn-bg);
