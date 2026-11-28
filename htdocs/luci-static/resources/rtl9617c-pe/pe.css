@@ -27,6 +27,18 @@
 html[data-vt-look-theme] .rtlpe {
 	--rp-border-soft: var(--v-line);
 }
+html[data-argon-mode] .rtlpe {
+	--rp-border: var(--border-color, #e2e8f0);
+	--rp-border-2: var(--control-border, #d5dce6);
+	--rp-border-soft: rgba(50, 50, 93, .08);
+	--rp-shadow: 0 2px 10px rgba(20, 32, 60, .05), 0 1px 2px rgba(20, 32, 60, .03);
+	--rp-btn-bg: #ffffff;
+	--rp-btn-hover: #f6f9fc;
+	--rp-btn-text: var(--text-strong, #32325d);
+	--rp-btn-border: #d5dce6;
+	--rp-thead-bg: #f8fafc;
+	--rp-row-hover: #f6f9fc;
+}
 .rtlpe *, .rtlpe *::before, .rtlpe *::after { box-sizing: border-box; }
 @media (prefers-color-scheme: dark) {
 	:root:not([data-argon-mode="light"]):not([data-darkmode="false"]) .rtlpe {
@@ -38,6 +50,16 @@ html[data-vt-look-theme] .rtlpe {
 		--rp-inset: var(--v-surface-3, var(--surface-muted, #2d2d2d));
 		--rp-text: var(--v-text, var(--text-strong, #e6e6e6));
 		--rp-shadow: var(--v-shadow, var(--section-shadow, 0 3px 12px rgba(0, 0, 0, .35)));
+	}
+	html[data-argon-mode="normal"] .rtlpe {
+		--rp-border-soft: rgba(255, 255, 255, .08);
+		--rp-shadow: 0 2px 12px rgba(0, 0, 0, .35);
+		--rp-btn-bg: #2f3136;
+		--rp-btn-hover: #3a3d45;
+		--rp-btn-text: var(--text-strong, #e6e6e6);
+		--rp-btn-border: #4a4d55;
+		--rp-thead-bg: #2b2d30;
+		--rp-row-hover: rgba(255, 255, 255, .035);
 	}
 }
 :root[data-darkmode="true"] .rtlpe,
@@ -51,9 +73,38 @@ html[data-vt-look-theme] .rtlpe {
 	--rp-text: var(--v-text, var(--text-strong, #e6e6e6));
 	--rp-shadow: var(--v-shadow, var(--section-shadow, 0 3px 12px rgba(0, 0, 0, .35)));
 }
+html[data-argon-mode="dark"] .rtlpe {
+	--rp-border-soft: rgba(255, 255, 255, .08);
+	--rp-shadow: 0 2px 12px rgba(0, 0, 0, .35);
+	--rp-btn-bg: #2f3136;
+	--rp-btn-hover: #3a3d45;
+	--rp-btn-text: var(--text-strong, #e6e6e6);
+	--rp-btn-border: #4a4d55;
+	--rp-thead-bg: #2b2d30;
+	--rp-row-hover: rgba(255, 255, 255, .035);
+}
 .rtlpe .rp-header {
 	display: flex; align-items: flex-start; justify-content: space-between;
 	flex-wrap: wrap; gap: 14px; margin: 6px 0 18px;
+}
+/* Argon paints a 2rem header::after primary banner behind #maincontent; elevate hero into a native card. */
+html[data-argon-mode] .rtlpe .rp-header {
+	margin: 0 0 18px;
+	padding: 18px 22px;
+	border: 1px solid var(--rp-border);
+	border-radius: var(--rp-radius);
+	background: var(--rp-surface);
+	box-shadow: var(--rp-shadow);
+}
+html[data-argon-mode] .rtlpe :is(.cbi-button, .btn):not(.cbi-button-apply):not(.cbi-button-action):not(.cbi-button-positive):not(.cbi-button-add):not(.cbi-button-save):not(.cbi-button-remove):not(.cbi-button-negative):not(.cbi-button-reset):not(.cbi-button-success):not(.cbi-button-download):not(.cbi-button-edit):not(.cbi-button-reload):not(.cbi-button-link):not(.primary):not(.danger):not(.btn-danger) {
+	background-color: var(--rp-btn-bg);
+	color: var(--rp-btn-text);
+	border: 1px solid var(--rp-btn-border);
+}
+html[data-argon-mode] .rtlpe :is(.cbi-button, .btn):not(.cbi-button-apply):not(.cbi-button-action):not(.cbi-button-positive):not(.cbi-button-add):not(.cbi-button-save):not(.cbi-button-remove):not(.cbi-button-negative):not(.cbi-button-reset):not(.cbi-button-success):not(.cbi-button-download):not(.cbi-button-edit):not(.cbi-button-reload):not(.cbi-button-link):not(.primary):not(.danger):not(.btn-danger):hover:not(:disabled) {
+	background-color: var(--rp-btn-hover);
+	border-color: var(--rp-accent-line);
+	color: var(--rp-accent);
 }
 .rtlpe .rp-header h2 {
 	margin: 0 0 6px; padding: 0; border: 0; width: auto; border-radius: 0;
@@ -158,6 +209,18 @@ html[data-vt-look-theme] .rtlpe .rp-header h2 {
 .rtlpe .rp-tab-btn:hover:not(:disabled) {
 	border-color: var(--rp-muted);
 }
+html[data-argon-mode] .rtlpe .rp-mode-btn:not(.is-active),
+html[data-argon-mode] .rtlpe .rp-tab-btn:not(.is-active) {
+	background: var(--rp-btn-bg);
+	border-color: var(--rp-btn-border);
+	color: var(--rp-btn-text);
+}
+html[data-argon-mode] .rtlpe .rp-mode-btn:not(.is-active):hover:not(:disabled),
+html[data-argon-mode] .rtlpe .rp-tab-btn:not(.is-active):hover:not(:disabled) {
+	background: var(--rp-btn-hover);
+	border-color: var(--rp-accent-line);
+	color: var(--rp-accent);
+}
 .rtlpe .rp-tab-btn {
 	min-height: 30px; padding: 5px 12px; border-radius: var(--v-r, 7px); font-size: 12px;
 }
@@ -195,11 +258,21 @@ html[data-vt-look-theme] .rtlpe .rp-tab-btn.is-active {
 .rtlpe .rp-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .rtlpe table.rp-table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
 .rtlpe table.rp-table th, .rtlpe table.rp-table td {
-	text-align: left; padding: 10px; border-bottom: 1px solid var(--rp-border);
+	text-align: left; padding: 10px; border-top: 0; border-bottom: 1px solid var(--rp-border);
 	vertical-align: middle; white-space: nowrap;
 }
 .rtlpe table.rp-table th { color: var(--rp-muted); font-weight: 600; font-size: 12px; }
 .rtlpe table.rp-table td.rp-wrap { white-space: normal; min-width: 180px; }
+html[data-argon-mode] .rtlpe table.rp-table th {
+	background: var(--rp-thead-bg); border-top: 0; border-bottom: 1px solid var(--rp-border);
+	padding: 10px;
+}
+html[data-argon-mode] .rtlpe table.rp-table td {
+	border-top: 0; padding: 10px;
+}
+html[data-argon-mode] .rtlpe table.rp-table tbody tr { background: transparent; }
+html[data-argon-mode] .rtlpe table.rp-table tbody tr:hover td { background: var(--rp-row-hover); }
+html[data-argon-mode] .rtlpe table.rp-table tbody tr:last-child td { border-bottom: 0; }
 html[data-vt-look-theme] .rtlpe table.rp-table th {
 	font-size: var(--v-fs-micro, 10.5px); letter-spacing: .06em; text-transform: uppercase;
 	border-bottom-color: var(--v-line-2);
@@ -249,6 +322,7 @@ html[data-vt-look-theme] .rtlpe .rp-sel {
 /* Mobile & narrow viewport polish */
 @media (max-width: 768px) {
 	.rtlpe .rp-header { margin: 4px 0 14px; gap: 10px; }
+	html[data-argon-mode] .rtlpe .rp-header { margin: 0 0 14px; padding: 14px 16px; }
 	.rtlpe .rp-header h2,
 	.rtlpe .rp-header h2.vt-repeat { font-size: var(--v-fs-xl, 20px); }
 	.rtlpe .rp-grid, .rtlpe .rp-grid-3 { gap: 12px; margin-bottom: 14px; }
